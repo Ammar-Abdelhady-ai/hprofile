@@ -6,7 +6,6 @@ on:
 jobs:
   Testing:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,10 +28,6 @@ jobs:
       - name: Setup SonarQube
         uses: warchant/setup-sonar-scanner@v7
 
-      # Verify sonar-scanner installation
-      - name: Verify sonar-scanner installation
-        run: sonar-scanner --version
-
       - name: SonarQube Scan
         run: |
           sonar-scanner \
@@ -44,4 +39,4 @@ jobs:
             -Dsonar.junit.reportsPath=target/surefire-reports/ \
             -Dsonar.jacoco.reportPath=target/jacoco.exec \
             -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
-            -Dsonar.java.binaries=target/test-classes/
+            -Dsonar.java.binaries=target/test-classes/com/visualpathit/account
