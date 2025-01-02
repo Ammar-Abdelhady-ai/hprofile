@@ -1,0 +1,14 @@
+name: Hprofile Actions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Testing workflow
+        run: echo "Workflow Works..."
