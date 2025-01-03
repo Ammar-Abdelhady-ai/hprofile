@@ -24,20 +24,21 @@ jobs:
 
       - name: Testing workflow
         run: echo "Workflow Works..."
-        # Setup sonar-scanner
+
+      # Setup SonarScanner
       - name: Setup SonarQube
         uses: warchant/setup-sonar-scanner@v7
 
-      # Run sonar-scanner
+      # Run SonarScanner
       - name: SonarQube Scan
-        run: sonar-scanner
-            -Dsonar.host.url=${{ secrets.SONAR_URL }}
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-            -Dsonar.sources=$GITHUB_WORKSPACE
-            -Dsonar.sources=src/
-            -Dsonar.junit.reportsPath=target/surefire-reports/ 
-            -Dsonar.jacoco.reportPath=target/jacoco.exec 
-            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml 
+        run: |
+          sonar-scanner \
+            -Dsonar.host.url=${{ secrets.SONAR_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+            -Dsonar.sources=src/ \
+            -Dsonar.junit.reportsPath=target/surefire-reports/ \
+            -Dsonar.jacoco.reportPath=target/jacoco.exec \
+            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
             -Dsonar.java.binaries=target/test-classes/com/visualpathit/account
