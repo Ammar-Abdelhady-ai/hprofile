@@ -10,12 +10,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Java 11
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-
       - name: Maven test
         run: mvn test
 
@@ -24,7 +18,14 @@ jobs:
 
       - name: Testing workflow
         run: echo "Workflow Works..."
-        # Setup sonar-scanner
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      # Setup sonar-scanner
       - name: Setup SonarQube
         uses: warchant/setup-sonar-scanner@v7
 
@@ -35,9 +36,8 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-            -Dsonar.sources=$GITHUB_WORKSPACE
             -Dsonar.sources=src/
-            -Dsonar.junit.reportsPath=target/surefire-reports/ 
-            -Dsonar.jacoco.reportPath=target/jacoco.exec 
-            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml 
+            -Dsonar.junit.reportsPath=target/surefire-reports/
+            -Dsonar.jacoco.reportPath=target/jacoco.exec
+            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
             -Dsonar.java.binaries=target/test-classes/com/visualpathit/account
