@@ -24,24 +24,20 @@ jobs:
 
       - name: Testing workflow
         run: echo "Workflow Works..."
+        # Setup sonar-scanner
+      - name: Setup SonarQube
+        uses: warchant/setup-sonar-scanner@v7
 
-      - name: Setup SonarQube Scanner
-        run: |
-          curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip sonar-scanner-cli.zip
-          export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
-        shell: bash
-
+      # Run sonar-scanner
       - name: SonarQube Scan
-        run: |
-          sonar-scanner -X \
-            -Dsonar.host.url=${{ secrets.SONAR_URL }} \
-            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.sources=src/ \
-            -Dsonar.junit.reportsPath=target/surefire-reports/ \
-            -Dsonar.jacoco.reportPath=target/jacoco.exec \
-            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
+        run: sonar-scanner
+            -Dsonar.host.url=${{ secrets.SONAR_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.sources=$GITHUB_WORKSPACE
+            -Dsonar.sources=src/
+            -Dsonar.junit.reportsPath=target/surefire-reports/ 
+            -Dsonar.jacoco.reportPath=target/jacoco.exec 
+            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml 
             -Dsonar.java.binaries=target/test-classes/com/visualpathit/account
-        shell: bash
